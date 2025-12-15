@@ -4,7 +4,7 @@
 - [Parth Patel] ([parthp])
 - [Giridhar Sawhney] ([girisaw])
 - [Neelay Sachdeva] ([nsachdev])
-- [Ayush Jaun] ([ajain01])
+- [Ayush Jain] ([ajain01])
 
 ## App Description
 A web application that allows users to search for events using the Ticketmaster Discovery API, save events to a personal wishlist stored in MongoDB, add notes to saved events, and view event locations on an interactive map powered by Leaflet and OpenStreetMap.
