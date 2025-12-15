@@ -1,5 +1,8 @@
 # Local Event Wishlist + Map
 
+## Submitted By:
+- Parth Patel ([parthp])
+
 ## Group Members
 - [Parth Patel] ([parthp])
 - [Giridhar Sawhney] ([girisaw])
@@ -16,7 +19,7 @@ A web application that allows users to search for events using the Ticketmaster 
 - **Ticketmaster Discovery API** - [https://developer.ticketmaster.com/products-and-docs/apis/discovery-api/v2/](https://developer.ticketmaster.com/products-and-docs/apis/discovery-api/v2/)
 
 ## Deployed App Link
-[Live App on Render](https://your-app-name.onrender.com)
+[Live App on Render](https://three35finalproject-p8rw.onrender.com)
 
 ---
 
