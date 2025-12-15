@@ -1,0 +1,178 @@
+<%- include('../partials/head') %>
+<%- include('../partials/nav') %>
+
+<section class="page-header">
+  <h1>Search Events</h1>
+  <p>Find concerts, sports, theater & more from Ticketmaster</p>
+</section>
+
+<!-- Search Form (Required Form for Assignment) -->
+<section class="search-section">
+  <form action="/events/search" method="POST" class="search-form">
+    <div class="form-row">
+      <div class="form-group form-group-large">
+        <label for="keyword">Keyword <span class="required">*</span></label>
+        <input 
+          type="text" 
+          id="keyword" 
+          name="keyword" 
+          placeholder="e.g., Taylor Swift, Lakers, Hamilton..."
+          value="<%= searchParams.keyword || '' %>"
+          required
+        >
+      </div>
+    </div>
+    
+    <div class="form-row">
+      <div class="form-group">
+        <label for="city">City</label>
+        <input 
+          type="text" 
+          id="city" 
+          name="city" 
+          placeholder="e.g., Los Angeles"
+          value="<%= searchParams.city || '' %>"
+        >
+      </div>
+      
+      <div class="form-group">
+        <label for="stateCode">State Code</label>
+        <input 
+          type="text" 
+          id="stateCode" 
+          name="stateCode" 
+          placeholder="e.g., CA, NY, MD"
+          maxlength="2"
+          value="<%= searchParams.stateCode || '' %>"
+        >
+      </div>
+    </div>
+    
+    <div class="form-row">
+      <div class="form-group">
+        <label for="startDateTime">Start Date</label>
+        <input 
+          type="date" 
+          id="startDateTime" 
+          name="startDateTime"
+          value="<%= searchParams.startDateTime || '' %>"
+        >
+      </div>
+      
+      <div class="form-group">
+        <label for="endDateTime">End Date</label>
+        <input 
+          type="date" 
+          id="endDateTime" 
+          name="endDateTime"
+          value="<%= searchParams.endDateTime || '' %>"
+        >
+      </div>
+    </div>
+    
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary">
+        🔍 Search Events
+      </button>
+    </div>
+  </form>
+</section>
+
+<% if (error) { %>
+  <div class="alert alert-error">
+    <span class="alert-icon">⚠️</span>
+    <%= error %>
+  </div>
+<% } %>
+
+<% if (searched && events.length === 0 && !error) { %>
+  <div class="alert alert-info">
+    <span class="alert-icon">ℹ️</span>
+    No events found. Try different search terms or broaden your filters.
+  </div>
+<% } %>
+
+<% if (events.length > 0) { %>
+  <section class="results-section">
+    <h2 class="results-title">Found <%= events.length %> Events</h2>
+    
+    <div class="events-grid">
+      <% events.forEach(event => { %>
+        <article class="event-card">
+          <% if (event.imageUrl) { %>
+            <div class="event-image">
+              <img src="<%= event.imageUrl %>" alt="<%= event.name %>">
+              <% if (event.segment) { %>
+                <span class="event-badge"><%= event.segment %></span>
+              <% } %>
+            </div>
+          <% } %>
+          
+          <div class="event-content">
+            <h3 class="event-title"><%= event.name %></h3>
+            
+            <div class="event-meta">
+              <% if (event.localDate) { %>
+                <div class="event-meta-item">
+                  <span class="meta-icon">📅</span>
+                  <span><%= new Date(event.localDate).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' }) %></span>
+                  <% if (event.localTime) { %>
+                    <span>at <%= event.localTime.substring(0, 5) %></span>
+                  <% } %>
+                </div>
+              <% } %>
+              
+              <% if (event.venueName) { %>
+                <div class="event-meta-item">
+                  <span class="meta-icon">📍</span>
+                  <span><%= event.venueName %></span>
+                </div>
+              <% } %>
+              
+              <% if (event.city || event.state) { %>
+                <div class="event-meta-item">
+                  <span class="meta-icon">🏙️</span>
+                  <span><%= event.city %><% if (event.city && event.state) { %>, <% } %><%= event.state %></span>
+                </div>
+              <% } %>
+              
+              <% if (event.priceRange) { %>
+                <div class="event-meta-item">
+                  <span class="meta-icon">💰</span>
+                  <span>$<%= event.priceRange.min %> - $<%= event.priceRange.max %></span>
+                </div>
+              <% } %>
+            </div>
+            
+            <div class="event-actions">
+              <a href="<%= event.url %>" target="_blank" rel="noopener" class="btn btn-outline btn-small">
+                🎟️ Get Tickets
+              </a>
+              
+              <!-- Save to Wishlist Form -->
+              <form action="/wishlist" method="POST" class="save-form">
+                <input type="hidden" name="ticketmasterId" value="<%= event.id %>">
+                <input type="hidden" name="name" value="<%= event.name %>">
+                <input type="hidden" name="dateTime" value="<%= event.dateTime || '' %>">
+                <input type="hidden" name="venueName" value="<%= event.venueName %>">
+                <input type="hidden" name="address" value="<%= event.address %>">
+                <input type="hidden" name="city" value="<%= event.city %>">
+                <input type="hidden" name="state" value="<%= event.state %>">
+                <input type="hidden" name="lat" value="<%= event.lat || '' %>">
+                <input type="hidden" name="lng" value="<%= event.lng || '' %>">
+                <input type="hidden" name="url" value="<%= event.url %>">
+                <input type="hidden" name="imageUrl" value="<%= event.imageUrl %>">
+                <button type="submit" class="btn btn-primary btn-small">
+                  💾 Save
+                </button>
+              </form>
+            </div>
+          </div>
+        </article>
+      <% }) %>
+    </div>
+  </section>
+<% } %>
+
+<%- include('../partials/footer') %>
+

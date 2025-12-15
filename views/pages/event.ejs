@@ -1,0 +1,136 @@
+<%- include('../partials/head') %>
+<%- include('../partials/nav') %>
+
+<section class="page-header">
+  <a href="/wishlist" class="back-link">← Back to Wishlist</a>
+  <h1><%= event.name %></h1>
+</section>
+
+<% if (success) { %>
+  <div class="alert alert-success">
+    <span class="alert-icon">✅</span>
+    <%= decodeURIComponent(success.replace(/\+/g, ' ')) %>
+  </div>
+<% } %>
+
+<% if (error) { %>
+  <div class="alert alert-error">
+    <span class="alert-icon">⚠️</span>
+    <%= error %>
+  </div>
+<% } %>
+
+<div class="event-detail">
+  <div class="event-detail-main">
+    <% if (event.imageUrl) { %>
+      <div class="event-detail-image">
+        <img src="<%= event.imageUrl %>" alt="<%= event.name %>">
+      </div>
+    <% } %>
+    
+    <div class="event-detail-info">
+      <h2 class="detail-section-title">Event Details</h2>
+      
+      <div class="detail-grid">
+        <% if (event.dateTime) { %>
+          <div class="detail-item">
+            <span class="detail-label">📅 Date & Time</span>
+            <span class="detail-value"><%= new Date(event.dateTime).toLocaleString('en-US', { 
+              weekday: 'long', 
+              year: 'numeric', 
+              month: 'long', 
+              day: 'numeric',
+              hour: 'numeric',
+              minute: '2-digit'
+            }) %></span>
+          </div>
+        <% } %>
+        
+        <% if (event.venueName) { %>
+          <div class="detail-item">
+            <span class="detail-label">📍 Venue</span>
+            <span class="detail-value"><%= event.venueName %></span>
+          </div>
+        <% } %>
+        
+        <% if (event.address) { %>
+          <div class="detail-item">
+            <span class="detail-label">🏠 Address</span>
+            <span class="detail-value"><%= event.address %></span>
+          </div>
+        <% } %>
+        
+        <% if (event.city || event.state) { %>
+          <div class="detail-item">
+            <span class="detail-label">🏙️ Location</span>
+            <span class="detail-value"><%= event.city %><% if (event.city && event.state) { %>, <% } %><%= event.state %></span>
+          </div>
+        <% } %>
+      </div>
+      
+      <% if (event.url) { %>
+        <div class="detail-actions">
+          <a href="<%= event.url %>" target="_blank" rel="noopener" class="btn btn-primary">
+            🎟️ Get Tickets on Ticketmaster
+          </a>
+        </div>
+      <% } %>
+    </div>
+  </div>
+  
+  <!-- Map for single event -->
+  <% if (event.lat && event.lng) { %>
+    <div class="event-detail-map">
+      <h2 class="detail-section-title">📍 Location Map</h2>
+      <div id="event-map" class="map-container map-small"></div>
+    </div>
+    
+    <script>
+      window.singleEvent = {
+        name: "<%= event.name.replace(/"/g, '\\"') %>",
+        venueName: "<%= event.venueName.replace(/"/g, '\\"') %>",
+        lat: <%= event.lat %>,
+        lng: <%= event.lng %>
+      };
+    </script>
+  <% } %>
+  
+  <!-- Notes Form (Required Form for Assignment) -->
+  <div class="event-detail-notes">
+    <h2 class="detail-section-title">📝 My Notes</h2>
+    
+    <form action="/wishlist/<%= event._id %>/notes" method="POST" class="notes-form">
+      <div class="form-group">
+        <label for="notes">Add your personal notes about this event:</label>
+        <textarea 
+          id="notes" 
+          name="notes" 
+          rows="5" 
+          placeholder="e.g., Going with friends, need to buy parking pass, dress code..."
+        ><%= event.notes || '' %></textarea>
+      </div>
+      
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">
+          💾 Save Notes
+        </button>
+      </div>
+    </form>
+  </div>
+  
+  <!-- Danger Zone -->
+  <div class="event-detail-danger">
+    <h2 class="detail-section-title">⚠️ Danger Zone</h2>
+    <p>Remove this event from your wishlist. This action cannot be undone.</p>
+    
+    <form action="/wishlist/<%= event._id %>/delete" method="POST" 
+          onsubmit="return confirm('Are you sure you want to remove this event from your wishlist?')">
+      <button type="submit" class="btn btn-danger">
+        🗑️ Remove from Wishlist
+      </button>
+    </form>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>
+

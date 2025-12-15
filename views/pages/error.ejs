@@ -1,0 +1,21 @@
+<%- include('../partials/head') %>
+<%- include('../partials/nav') %>
+
+<section class="error-page">
+  <div class="error-content">
+    <div class="error-icon">😕</div>
+    <h1 class="error-title"><%= title || 'Error' %></h1>
+    <p class="error-message"><%= message || 'Something went wrong. Please try again.' %></p>
+    <div class="error-actions">
+      <a href="/" class="btn btn-primary">
+        🏠 Go Home
+      </a>
+      <a href="/events/search" class="btn btn-secondary">
+        🔍 Search Events
+      </a>
+    </div>
+  </div>
+</section>
+
+<%- include('../partials/footer') %>
+

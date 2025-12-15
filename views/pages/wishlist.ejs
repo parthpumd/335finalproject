@@ -1,0 +1,125 @@
+<%- include('../partials/head') %>
+<%- include('../partials/nav') %>
+
+<section class="page-header">
+  <h1>My Wishlist</h1>
+  <p>Your saved events and their locations</p>
+</section>
+
+<% if (success) { %>
+  <div class="alert alert-success">
+    <span class="alert-icon">✅</span>
+    <%= decodeURIComponent(success.replace(/\+/g, ' ')) %>
+  </div>
+<% } %>
+
+<% if (error) { %>
+  <div class="alert alert-error">
+    <span class="alert-icon">⚠️</span>
+    <%= error %>
+  </div>
+<% } %>
+
+<% if (events.length === 0) { %>
+  <div class="empty-state">
+    <div class="empty-icon">📋</div>
+    <h2>Your wishlist is empty</h2>
+    <p>Search for events and save the ones you're interested in!</p>
+    <a href="/events/search" class="btn btn-primary">
+      🔍 Search Events
+    </a>
+  </div>
+<% } else { %>
+  <!-- Map Section -->
+  <section class="map-section">
+    <h2 class="section-title">📍 Event Locations</h2>
+    <div id="wishlist-map" class="map-container"></div>
+  </section>
+
+  <!-- Events List -->
+  <section class="wishlist-section">
+    <h2 class="section-title">💾 Saved Events (<%= events.length %>)</h2>
+    
+    <div class="wishlist-grid">
+      <% events.forEach(event => { %>
+        <article class="wishlist-card">
+          <% if (event.imageUrl) { %>
+            <div class="wishlist-image">
+              <img src="<%= event.imageUrl %>" alt="<%= event.name %>">
+            </div>
+          <% } %>
+          
+          <div class="wishlist-content">
+            <h3 class="wishlist-title">
+              <a href="/wishlist/<%= event._id %>"><%= event.name %></a>
+            </h3>
+            
+            <div class="wishlist-meta">
+              <% if (event.dateTime) { %>
+                <div class="meta-item">
+                  <span class="meta-icon">📅</span>
+                  <span><%= new Date(event.dateTime).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' }) %></span>
+                </div>
+              <% } %>
+              
+              <% if (event.venueName) { %>
+                <div class="meta-item">
+                  <span class="meta-icon">📍</span>
+                  <span><%= event.venueName %></span>
+                </div>
+              <% } %>
+              
+              <% if (event.city || event.state) { %>
+                <div class="meta-item">
+                  <span class="meta-icon">🏙️</span>
+                  <span><%= event.city %><% if (event.city && event.state) { %>, <% } %><%= event.state %></span>
+                </div>
+              <% } %>
+            </div>
+            
+            <% if (event.notes) { %>
+              <div class="wishlist-notes">
+                <span class="notes-label">📝 Notes:</span>
+                <p><%= event.notes.substring(0, 100) %><%= event.notes.length > 100 ? '...' : '' %></p>
+              </div>
+            <% } %>
+            
+            <div class="wishlist-actions">
+              <a href="/wishlist/<%= event._id %>" class="btn btn-outline btn-small">
+                ✏️ View/Edit
+              </a>
+              <% if (event.url) { %>
+                <a href="<%= event.url %>" target="_blank" rel="noopener" class="btn btn-outline btn-small">
+                  🎟️ Tickets
+                </a>
+              <% } %>
+              <form action="/wishlist/<%= event._id %>/delete" method="POST" class="delete-form" 
+                    onsubmit="return confirm('Remove this event from your wishlist?')">
+                <button type="submit" class="btn btn-danger btn-small">
+                  🗑️ Remove
+                </button>
+              </form>
+            </div>
+          </div>
+        </article>
+      <% }) %>
+    </div>
+  </section>
+
+  <!-- Pass events data to JavaScript for map -->
+  <script>
+    window.wishlistEvents = <%- JSON.stringify(events.map(e => ({
+      id: e._id,
+      name: e.name,
+      venueName: e.venueName,
+      city: e.city,
+      state: e.state,
+      lat: e.lat,
+      lng: e.lng,
+      dateTime: e.dateTime
+    }))) %>;
+  </script>
+<% } %>
+
+<%- include('../partials/footer') %>
+
