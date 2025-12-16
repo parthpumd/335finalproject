@@ -13,7 +13,7 @@
 A web application that allows users to search for events using the Ticketmaster Discovery API, save events to a personal wishlist stored in MongoDB, add notes to saved events, and view event locations on an interactive map powered by Leaflet and OpenStreetMap.
 
 ## YouTube Video Link
-[Watch the Demo Video]()
+[Watch the Demo Video](https://www.youtube.com/watch?app=desktop&v=JZURWf4iQvM&feature=youtu.be)
 
 ## APIs Used
 - **Ticketmaster Discovery API** - [https://developer.ticketmaster.com/products-and-docs/apis/discovery-api/v2/](https://developer.ticketmaster.com/products-and-docs/apis/discovery-api/v2/)
