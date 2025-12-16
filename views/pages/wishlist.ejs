@@ -30,13 +30,12 @@
     </a>
   </div>
 <% } else { %>
-  <!-- Map Section -->
+ 
   <section class="map-section">
     <h2 class="section-title">📍 Event Locations</h2>
     <div id="wishlist-map" class="map-container"></div>
   </section>
 
-  <!-- Events List -->
   <section class="wishlist-section">
     <h2 class="section-title">💾 Saved Events (<%= events.length %>)</h2>
     
@@ -106,7 +105,6 @@
     </div>
   </section>
 
-  <!-- Pass events data to JavaScript for map -->
   <script>
     window.wishlistEvents = <%- JSON.stringify(events.map(e => ({
       id: e._id,
