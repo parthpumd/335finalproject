@@ -50,12 +50,10 @@ const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
   console.log(`
-╔════════════════════════════════════════════╗
-║    🎫 Event Wishlist Server Started 🎫    ║
-╠════════════════════════════════════════════╣
-║  Local:   http://localhost:${PORT}            ║
-║  Mode:    ${process.env.NODE_ENV || 'development'}                     ║
-╚════════════════════════════════════════════╝
+     🎫 Event Wishlist Server Started
+     Local:   http://localhost:${PORT}
+     Mode:    ${process.env.NODE_ENV || 'development'}
+
   `);
 });
 
