@@ -6,7 +6,6 @@
   <p>Find concerts, sports, theater & more from Ticketmaster</p>
 </section>
 
-<!-- Search Form (Required Form for Assignment) -->
 <section class="search-section">
   <form action="/events/search" method="POST" class="search-form">
     <div class="form-row">
@@ -148,8 +147,7 @@
               <a href="<%= event.url %>" target="_blank" rel="noopener" class="btn btn-outline btn-small">
                 🎟️ Get Tickets
               </a>
-              
-              <!-- Save to Wishlist Form -->
+
               <form action="/wishlist" method="POST" class="save-form">
                 <input type="hidden" name="ticketmasterId" value="<%= event.id %>">
                 <input type="hidden" name="name" value="<%= event.name %>">
